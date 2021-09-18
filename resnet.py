@@ -63,8 +63,7 @@ class ResNet18(nn.Module):
     self.layer2 = block(128,256)
     self.layer3 = block(256,512)
     self.avgpool = nn.AdaptiveAvgPool2d(output_size=(1,1))
-    self.fc1 = nn.Linear(512,1000)
-    self.fc2 = nn.Linear(1000,5)
+    self.fc1 = nn.Linear(512,5)
 
   def forward(self,X):
     X = self.conv1(X)
@@ -76,9 +75,8 @@ class ResNet18(nn.Module):
     X = self.layer2(X)
     X = self.layer3(X)
     X = self.avgpool(X)
-    X = torch.reshape(X,(-1,1,512))
+    X = torch.flatten(X,1)
     X = self.fc1(X)
-    X = self.fc2(X)
 
     return X
 
